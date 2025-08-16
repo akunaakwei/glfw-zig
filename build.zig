@@ -80,16 +80,14 @@ pub fn build(b: *std.Build) !void {
 
     const glfw_upstream = b.dependency("glfw", .{});
 
-    const glfw = if (shared) b.addSharedLibrary(.{
+    const glfw = b.addLibrary(.{
         .name = "glfw3",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
-    }) else b.addStaticLibrary(.{
-        .name = "glfw3",
-        .target = target,
-        .optimize = optimize,
-        .link_libc = true,
+        .root_module = b.createModule(.{
+            .target = target,
+            .optimize = optimize,
+            .link_libc = true,
+        }),
+        .linkage = if (shared) .dynamic else .static,
     });
 
     if (glfw.linkage == .dynamic) glfw.root_module.addCMacro("_GLFW_BUILD_DLL", "1");
