@@ -282,7 +282,7 @@ pub fn build(b: *std.Build) !void {
             if (b.lazyDependency("libXcursor", .{})) |lib_x_cursor| {
                 const xcursor = b.addConfigHeader(.{
                     .style = .{
-                        .autoconf = lib_x_cursor.path("include/X11/Xcursor/Xcursor.h.in"),
+                        .autoconf_undef = lib_x_cursor.path("include/X11/Xcursor/Xcursor.h.in"),
                     },
                     .include_path = "X11/Xcursor/Xcursor.h",
                 }, .{
